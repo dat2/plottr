@@ -1,0 +1,4 @@
+!dist/plottr.js
+node_modules/
+
+*.hot-update.js*
