@@ -1,5 +1,10 @@
-import GraphSvg from './graphSvg';
 import randomColor from 'randomcolor';
+
+import GraphSvg from './graphSvg';
+import XAxis from './xAxis';
+import YAxis from './yAxis';
+
+import { domain, flatten, sort, uniq, reverse } from './util';
 
 const svgWidth = 800,
   svgHeight = 450,
@@ -7,19 +12,9 @@ const svgWidth = 800,
   chartWidth = (svgWidth - svgPadding.left - svgPadding.right),
   chartHeight = (svgHeight - svgPadding.top - svgPadding.bottom);
 
-function domain(ds = []) {
-  return ds.length ? [Math.min(...ds), Math.max(...ds)] : [0, 1];
-}
-
-function flatten(a) {
-  return a.reduce((x,y) => x.concat(y), []);
-}
-
-export default function LineChart({ style, data: { data = [] }, graph: { tickSize = 5 } = {} } = {}) {
-  const localStyle = Object.assign({}, style);
-
-  const xs = data.map(d => d.x);
-  const yss = data.map(d => d.ys);
+export default function LineChart({ data: { data = [] }, graph: { } = {} } = {}) {
+  let xs = data.map(d => d.x);
+  let yss = data.map(d => d.ys);
 
   const [, xMax] = domain(xs);
   const [, yMax] = domain(flatten(yss));
@@ -27,55 +22,47 @@ export default function LineChart({ style, data: { data = [] }, graph: { tickSiz
   const xScale = chartWidth / xMax;
   const yScale = chartHeight / yMax;
 
+  const points = yss.map((ys, i) => ({ ys: ys.map(y => y * yScale), x: xs[i] * xScale }));
+
   // in case users give us an empty array
   const colours = data.length && data[0].ys.length ?
     randomColor({ count: data[0].ys.length, luminosity: 'light' }) :
     [];
 
+  const yTicks = sort(uniq(flatten(yss)), (a, b) => a - b);
 
   // TODO plottr-info-circle needs an on:hover
   return (
-    <div style={localStyle}>
-      <GraphSvg width={svgWidth} height={svgHeight} padding={svgPadding}>
-        <g id='lines'>
-          {
-            data.map(({ x, ys }, i) =>
-              ys.map((y, yI) => (
-                <g key={yI}>
-                  <line
-                    x1={ (i > 0 ? data[i-1].x : data[i].x) * xScale }
-                    x2={ x * xScale }
-                    y1={ chartHeight - ((i > 0 ? data[i-1].ys[yI] : data[i].ys[yI]) * yScale) }
-                    y2={ chartHeight - (y * yScale) }
-                    key={ yI }
-                    stroke={ colours[yI] }></line>
-                  <circle
-                    cx={ x * xScale }
-                    cy={ chartHeight - (y * yScale) }
-                    r='2'
-                    fill={ colours[yI] }
-                    stroke='transparent'
-                    className="plottr-info-circle"
-                    />
-              </g>
-              ))
-            )
-          }
-        </g>
-        <g id='axis'>
-          <line className='x axis' x1='0' x2={chartWidth} y1={chartHeight} y2={chartHeight} stroke='black'/>
-          <g className='ticks'>
-            {
-              data.map(({ x }, i) => (
-                <line x1={x * xScale} x2={x * xScale} y1={chartHeight} y2={chartHeight + tickSize} key={i} stroke='black'/>
-              ))
-            }
-          </g>
-          <line className='y axis' x1='0' x2='0' y1='0' y2={chartHeight} stroke='black'/>
-          <g className='ticks'>
-          </g>
-        </g>
-      </GraphSvg>
-    </div>
+    <GraphSvg width={svgWidth} height={svgHeight} padding={svgPadding}>
+      <g id='lines'>
+        {
+          points.map(({ x, ys }, i) =>
+            ys.map((y, yI) => (
+              <g key={yI}>
+                <line
+                  x1={ i > 0 ? points[i-1].x : points[i].x }
+                  x2={ x }
+                  y1={ chartHeight - (i > 0 ? points[i-1].ys[yI] : points[i].ys[yI]) }
+                  y2={ chartHeight - y }
+                  key={ yI }
+                  stroke={ colours[yI] }></line>
+                <circle
+                  cx={ x }
+                  cy={ chartHeight - y }
+                  r='2'
+                  fill={ colours[yI] }
+                  stroke='transparent'
+                  className='plottr-info-circle'
+                  />
+            </g>
+            ))
+          )
+        }
+      </g>
+      <g id='axis'>
+        <XAxis xs={xs} xScale={xScale} chartWidth={chartWidth} chartHeight={chartHeight} tickSize={svgPadding.bottom / 2} textSize={svgPadding.bottom / 2} />
+        <YAxis ys={yTicks} yScale={yScale} chartWidth={chartWidth} chartHeight={chartHeight} tickSize={svgPadding.left / 2} textSize={svgPadding.left / 2} />
+      </g>
+    </GraphSvg>
   );
 }
