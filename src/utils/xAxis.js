@@ -1,3 +1,4 @@
+import React from 'react';
 // count ticks from data
 
 export default function xAxis({ xs = [], xScale, chartWidth, chartHeight, tickSize, textSize } = {}) {

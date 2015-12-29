@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function yAxis({ ys = [], yScale, chartWidth, chartHeight, tickSize, textSize } = {}) {
 
   const ticks = ys

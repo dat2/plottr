@@ -1,10 +1,12 @@
+import React from 'react';
+
 import randomColor from 'randomcolor';
 
-import GraphSvg from './graphSvg';
-import XAxis from './xAxis';
-import YAxis from './yAxis';
+import GraphSvg from '../utils/graphSvg';
+import XAxis from '../utils/xAxis';
+import YAxis from '../utils/yAxis';
 
-import { domain, flatten, sort, uniq, reverse } from './util';
+import { domain, flatten, sort, uniq } from '../utils/functions';
 
 const svgWidth = 800,
   svgHeight = 450,

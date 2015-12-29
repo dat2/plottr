@@ -2,10 +2,11 @@
   "name": "plottr",
   "version": "0.1.0",
   "description": "A react svg plotting library, inspired by d3",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "browser": "plottr.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "babel src --out-dir lib"
   },
   "repository": {
     "type": "git",
@@ -28,12 +29,13 @@
     "react": "~0.14"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
+    "babel-cli": "^6.3.17",
     "babel-core": "^6.3.26",
     "babel-loader": "^6.2.0",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "eslint-plugin-react": "^3.13.0",
+    "gulp": "^3.9.0",
     "react-dom": "^0.14.3",
     "webpack": "^1.12.9"
   },
