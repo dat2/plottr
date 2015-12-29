@@ -13,9 +13,17 @@ it.
 ```js
 import { LineChart } from 'plottr';
 
+// data example
+const data = {
+  data: [
+    { x: 0, ys: [1] },
+    { x: 1, ys: [2] }
+  ]
+};
+
 ReactDOM.render(
   <LineChart data={data} style={{width: '50%'}}/>,
-  document.getElementById('test')
+  document.getElementById('app')
 );
 ```
 
@@ -23,6 +31,18 @@ ReactDOM.render(
 Since this is done in react, it is very easy to make an exported image.
 
 ```js
-import { exportToFile } from 'plottr';
-exportToFile(<LineChart data={data}/>, 'linechart.svg');
+import { Linechart, exportToFile } from 'plottr';
+
+// data example
+const data = {
+  data: [
+    { x: 0, ys: [1, 2] },
+    { x: 1, ys: [2, 3] }
+  ]
+};
+
+exportToFile(<LineChart data={data}/>, 'linechart.svg')
+  .then(() => {
+    // ...
+  });
 ```
