@@ -27,6 +27,20 @@ ReactDOM.render(
 );
 ```
 
+## Webpack
+If you are using webpack, you need to add the following to your `webpack.config.js`.
+This prevents errors with `exportToFile`.
+
+```js
+module.exports = {
+ // ...
+ node: {
+   fs: 'empty'
+ },
+ // ...
+};
+```
+
 ## SVG Export
 Since this is done in react, it is very easy to make an exported image.
 
