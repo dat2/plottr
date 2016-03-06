@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "browser": "plottr.min.js",
   "scripts": {
-    "prepublish": "babel src --out-dir lib --source-maps"
+    "prepublish": "rimraf lib && babel src --out-dir lib --source-maps inline"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "eslint-plugin-react": "^3.13.0",
     "gulp": "^3.9.0",
     "react-dom": "^0.14.3",
+    "rimraf": "^2.5.2",
     "webpack": "^1.12.9"
   },
   "dependencies": {}
