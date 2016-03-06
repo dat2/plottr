@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A react svg plotting library, inspired by d3",
   "main": "lib/index.js",
   "browser": "plottr.min.js",
@@ -39,6 +39,5 @@
     "react-dom": "^0.14.3",
     "webpack": "^1.12.9"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
