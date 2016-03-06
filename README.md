@@ -13,16 +13,50 @@ it.
 ```js
 import { LineChart } from 'plottr';
 
+// data example
+const data = {
+  data: [
+    { x: 0, ys: [1] },
+    { x: 1, ys: [2] }
+  ]
+};
+
 ReactDOM.render(
   <LineChart data={data} style={{width: '50%'}}/>,
-  document.getElementById('test')
+  document.getElementById('app')
 );
+```
+
+## Webpack
+If you are using webpack, you need to add the following to your `webpack.config.js`.
+This prevents errors with `exportToFile`.
+
+```js
+module.exports = {
+ // ...
+ node: {
+   fs: 'empty'
+ },
+ // ...
+};
 ```
 
 ## SVG Export
 Since this is done in react, it is very easy to make an exported image.
 
 ```js
-import { exportToFile } from 'plottr';
-exportToFile(<LineChart data={data}/>, 'linechart.svg');
+import { Linechart, exportToFile } from 'plottr';
+
+// data example
+const data = {
+  data: [
+    { x: 0, ys: [1, 2] },
+    { x: 1, ys: [2, 3] }
+  ]
+};
+
+exportToFile(<LineChart data={data}/>, 'linechart.svg')
+  .then(() => {
+    // ...
+  });
 ```
